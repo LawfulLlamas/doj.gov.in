@@ -3145,12 +3145,13 @@
 
 
 
-    <!-- Chatbot Button and Dialog -->
     <div id="chatbot">
+        <!-- Chatbot Icon -->
         <div id="chatbot-icon" onclick="toggleChat()">
-            <!-- Chatbot Icon (Circular) -->
             <img src="./images/chatbot.png" alt="Chatbot Icon" />
         </div>
+    
+        <!-- Chatbot Dialog -->
         <div id="chatbot-dialog">
             <div id="chatbot-header">
                 <span>Chatbot</span>
@@ -3322,6 +3323,29 @@
 
         #chatbot-footer button:hover {
             background-color: #0056b3;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #007bff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+    
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    
+        /* Typing Indicator */
+        .typing {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
         }
     </style>
 
