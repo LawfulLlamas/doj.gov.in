@@ -3124,7 +3124,6 @@
         </div>
     </footer>
 
-    
 
 
 
@@ -3145,187 +3144,260 @@
 
 
 
-<!-- Chatbot Button and Dialog -->
-<div id="chatbot">
-    <div id="chatbot-icon" onclick="toggleChat()">
-        <!-- Chatbot Icon (Circular) -->
-        <img src="./images/chatbot.png" alt="Chatbot Icon" />
+
+    <!-- Chatbot Button and Dialog -->
+    <div id="chatbot">
+        <div id="chatbot-icon" onclick="toggleChat()">
+            <!-- Chatbot Icon (Circular) -->
+            <img src="./images/chatbot.png" alt="Chatbot Icon" />
+        </div>
+        <div id="chatbot-dialog">
+            <div id="chatbot-header">
+                <span>Chatbot</span>
+                <span id="close-chatbot" onclick="toggleChat()">✖</span>
+            </div>
+            <div id="chatbot-body">
+                <!-- Chat Messages -->
+                <div id="messages"></div>
+            </div>
+            <div id="chatbot-footer">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
     </div>
-    <div id="chatbot-dialog">
-        <div id="chatbot-header">
-            <span>Chatbot</span>
-            <span id="close-chatbot" onclick="toggleChat()">✖</span>
-        </div>
-        <div id="chatbot-body">
-            <!-- Chat Messages -->
-            <div id="messages"></div>
-        </div>
-        <div id="chatbot-footer">
-            <input type="text" id="user-input" placeholder="Type your message here..." />
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div>
-</div>
 
-<style>
-    /* Chatbot Container */
-    #chatbot {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-
-    /* Chatbot Icon (Circular) */
-    #chatbot-icon {
-        width: 60px;
-        height: 60px;
-        background-color: #007bff;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s;
-    }
-
-    #chatbot-icon:hover {
-        transform: scale(1.1);
-    }
-
-    /* Chatbot Icon Image */
-    #chatbot-icon img {
-        width: 30px;
-        height: 30px;
-    }
-
-    /* Chatbot Dialog */
-    #chatbot-dialog {
-        display: none;
-        position: absolute;
-        bottom: 80px;
-        right: 0;
-        width: 350px;
-        height: 450px;
-        background-color: #f9f9f9;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        flex-direction: column;
-        animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+    <style>
+        /* Chatbot Container */
+        #chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+
+        /* Chatbot Icon (Circular) */
+        #chatbot-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
         }
-    }
 
-    /* Chatbot Header */
-    #chatbot-header {
-        background-color: #007bff;
-        color: white;
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 15px 15px 0 0;
-        font-family: Arial, sans-serif;
-        font-size: 18px;
-    }
+        #chatbot-icon:hover {
+            transform: scale(1.1);
+        }
 
-    #close-chatbot {
-        cursor: pointer;
-    }
+        /* Chatbot Icon Image */
+        #chatbot-icon img {
+            width: 30px;
+            height: 30px;
+        }
 
-    /* Chatbot Body */
-    #chatbot-body {
-        flex: 1;
-        padding: 15px;
-        overflow-y: auto;
-        background: #ffffff;
-        background: linear-gradient(145deg, #f9f9f9, #e0e0e0);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        /* Chatbot Dialog */
+        #chatbot-dialog {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
 
-    /* Chat Messages */
-    #messages {
-        display: flex;
-        flex-direction: column;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-    /* User's Message */
-    .user-message {
-        align-self: flex-end;
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 20px 20px 0 20px;
-        margin: 5px 0;
-        max-width: 75%;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        word-wrap: break-word;
-    }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    /* Bot's Message */
-    .bot-message {
-        align-self: flex-start;
-        background-color: #e0e0e0;
-        color: #333;
-        padding: 10px 15px;
-        border-radius: 20px 20px 20px 0;
-        margin: 5px 0;
-        max-width: 75%;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        word-wrap: break-word;
-    }
+        /* Chatbot Header */
+        #chatbot-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 15px 15px 0 0;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
 
-    /* Chatbot Footer */
-    #chatbot-footer {
-        padding: 15px;
-        border-top: 1px solid #ccc;
-        display: flex;
-        background-color: #f9f9f9;
-        border-radius: 0 0 15px 15px;
-    }
+        #close-chatbot {
+            cursor: pointer;
+        }
 
-    #user-input {
-        flex: 1;
-        padding: 10px;
-        border-radius: 25px;
-        border: 1px solid #ccc;
-        outline: none;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        /* Chatbot Body */
+        #chatbot-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #ffffff;
+            background: linear-gradient(145deg, #f9f9f9, #e0e0e0);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    #chatbot-footer button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 25px;
-        margin-left: 10px;
-        cursor: pointer;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        /* Chat Messages */
+        #messages {
+            display: flex;
+            flex-direction: column;
+        }
 
-    #chatbot-footer button:hover {
-        background-color: #0056b3;
-    }
-</style>
+        /* User's Message */
+        .user-message {
+            align-self: flex-end;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px 20px 0 20px;
+            margin: 5px 0;
+            max-width: 75%;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            word-wrap: break-word;
+        }
+
+        /* Bot's Message */
+        .bot-message {
+            align-self: flex-start;
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 20px 20px 20px 0;
+            margin: 5px 0;
+            max-width: 75%;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            word-wrap: break-word;
+        }
+
+        /* Chatbot Footer */
+        #chatbot-footer {
+            padding: 15px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            background-color: #f9f9f9;
+            border-radius: 0 0 15px 15px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #chatbot-footer button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #chatbot-footer button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <script>
+        const API_KEY = 'AIzaSyBZKQJ5pnFCGuACFuIMqFCRPkPmy8aVIh8'; // Replace with your actual API key
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+
+        function toggleChat() {
+            var dialog = document.getElementById('chatbot-dialog');
+            dialog.style.display = dialog.style.display === 'none' || dialog.style.display === '' ? 'flex' : 'none';
+        }
+
+        function sendMessage() {
+            var userInput = document.getElementById('user-input');
+            var messages = document.getElementById('messages');
+
+            if (userInput.value.trim() !== '') {
+                // Append user's message
+                var userMessage = document.createElement('div');
+                userMessage.textContent = userInput.value;
+                userMessage.className = 'user-message';
+                messages.appendChild(userMessage);
+
+                // Send the message to the API
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userInput.value }] }]
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Parse the bot's response from the API
+                        if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+                            var botMessageText = data.candidates[0].content.parts[0].text;
+
+                            // Append bot's response
+                            var botMessage = document.createElement('div');
+                            botMessage.textContent = botMessageText;
+                            botMessage.className = 'bot-message';
+                            messages.appendChild(botMessage);
+                        } else {
+                            // Handle unexpected API response
+                            var errorMessage = document.createElement('div');
+                            errorMessage.textContent = "Sorry, something went wrong!";
+                            errorMessage.className = 'bot-message';
+                            messages.appendChild(errorMessage);
+                        }
+
+                        // Scroll to the bottom of the messages
+                        messages.scrollTop = messages.scrollHeight;
+                    })
+                    .catch(error => {
+                        // Handle any errors from the API request
+                        console.error('Error:', error);
+                        var errorMessage = document.createElement('div');
+                        errorMessage.textContent = "Error communicating with the bot.";
+                        errorMessage.className = 'bot-message';
+                        messages.appendChild(errorMessage);
+
+                        // Scroll to the bottom of the messages
+                        messages.scrollTop = messages.scrollHeight;
+                    });
+
+                // Clear the input
+                userInput.value = '';
+            }
+        }
+    </script>
 
 
-<script>
+
+    <!-- <script>
 const API_URL = 'https://329a-34-16-135-116.ngrok-free.app/predict';
 
 function toggleChat() {
@@ -3411,7 +3483,7 @@ function sendMessage() {
 }
 
 
-</script>
+</script> -->
 
     <!--a class="top" href="#top"><span class="icon-arrow-top"></span></a-->
     <!-- Global site tag (gtag.js) - Google Analytics -->
