@@ -3146,193 +3146,221 @@
 
 
 <!-- Chatbot Button and Dialog -->
-<div id="chatbot">
-    <div id="chatbot-icon" onclick="toggleChat()">
-        <!-- Chatbot Icon (Circular) -->
-        <img src="./images/chatbot.png" alt="Chatbot Icon" />
+<div id="chat-toggle" onclick="toggleChat()">
+    <img src="chaticon.png" alt="Chat Icon">
+</div>
+
+<!-- Chat Window -->
+<div id="chat-window">
+    <div id="chat-header">
+        <h2>DoJ Chatbot</h2>
+        <button id="close-chat" onclick="toggleChat()">×</button>
     </div>
-    <div id="chatbot-dialog">
-        <div id="chatbot-header">
-            <span>Chatbot</span>
-            <span id="close-chatbot" onclick="toggleChat()">✖</span>
-        </div>
-        <div id="chatbot-body">
-            <!-- Chat Messages -->
-            <div id="messages"></div>
-        </div>
-        <div id="chatbot-footer">
-            <input type="text" id="user-input" placeholder="Type your message here..." />
-            <button onclick="sendMessage()">Send</button>
-        </div>
+    <div id="chat-messages">
+        <!-- Messages will be dynamically added here -->
+    </div>
+    <div id="chat-input">
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
     </div>
 </div>
 
 <style>
-    /* Chatbot Container */
-    #chatbot {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
+    @keyframes gradientShift {
+            0% { background-position: 0% 0%, 0% 0%; }
+            50% { background-position: 100% 100%, 100% 100%; }
+            100% { background-position: 0% 0%, 0% 0%; }
+        }
 
-    /* Chatbot Icon (Circular) */
-    #chatbot-icon {
-        width: 60px;
-        height: 60px;
-        background-color: #007bff;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s;
-    }
+        @keyframes patternShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
 
-    #chatbot-icon:hover {
-        transform: scale(1.1);
-    }
+        /* Continuous Gradient Animation Inside Logo */
+        @keyframes insideContinuousEffect {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
 
-    /* Chatbot Icon Image */
-    #chatbot-icon img {
-        width: 30px;
-        height: 30px;
-    }
+        /* Pop-out Animation */
+        @keyframes popOut {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
-    /* Chatbot Dialog */
-    #chatbot-dialog {
-        display: none;
-        position: absolute;
-        bottom: 80px;
-        right: 0;
-        width: 350px;
-        height: 450px;
-        background-color: #f9f9f9;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        flex-direction: column;
-        animation: fadeIn 0.3s ease;
-    }
+        /* Chat Toggle Button */
+        #chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #FF9933 33.33%, #FFFFFF 33.33% 66.66%, #138808 66.66%);
+            background-size: 300% 300%;
+            animation: insideContinuousEffect 2s ease-in-out infinite;
+            overflow: hidden;
+            z-index: 10;
+            /* Ensure pop-out animation occurs only once */
+            animation: popOut 1s ease-out forwards, insideContinuousEffect 2s ease-in-out infinite;
+        }
 
-    @keyframes fadeIn {
-        from {
+        #chat-toggle img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        #chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Chat Window */
+        #chat-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            width: 200px;
+            height: 200px;
+            background: #ffffff;
+            border: 1px solid #FFD700;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            visibility: hidden;
             opacity: 0;
-            transform: translateY(20px);
+            transition: visibility 0.3s, opacity 0.3s, transform 0.3s;
+            z-index: 5;
         }
-        to {
+
+        #chat-window.visible {
+            visibility: visible;
             opacity: 1;
-            transform: translateY(0);
+            transform: translate(-50%, -50%) scale(1);
+            width: 350px;
+            height: 500px;
         }
-    }
 
-    /* Chatbot Header */
-    #chatbot-header {
-        background-color: #007bff;
-        color: white;
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 15px 15px 0 0;
-        font-family: Arial, sans-serif;
-        font-size: 18px;
-    }
+        #chat-header {
+            background: #3a4e6c;
+            color: #FFD700;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #FFD700;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    #close-chatbot {
-        cursor: pointer;
-    }
+        #close-chat {
+            background: none;
+            border: none;
+            color: #FFD700;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-    /* Chatbot Body */
-    #chatbot-body {
-        flex: 1;
-        padding: 15px;
-        overflow-y: auto;
-        background: #ffffff;
-        background: linear-gradient(145deg, #f9f9f9, #e0e0e0);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        #close-chat:hover {
+            color: #ff6f61;
+        }
 
-    /* Chat Messages */
-    #messages {
-        display: flex;
-        flex-direction: column;
-    }
+        #chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-    /* User's Message */
-    .user-message {
-        align-self: flex-end;
-        background-color: #007bff;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 20px 20px 0 20px;
-        margin: 5px 0;
-        max-width: 75%;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        word-wrap: break-word;
-    }
+        #chat-messages .message {
+            max-width: 85%;
+            padding: 10px;
+            border-radius: 15px;
+            line-height: 1.6;
+            font-size: 14px;
+            word-wrap: break-word;
+            background: #FFD700;
+            color: #000000;
+        }
 
-    /* Bot's Message */
-    .bot-message {
-        align-self: flex-start;
-        background-color: #e0e0e0;
-        color: #333;
-        padding: 10px 15px;
-        border-radius: 20px 20px 20px 0;
-        margin: 5px 0;
-        max-width: 75%;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        word-wrap: break-word;
-    }
+        .message.user {
+            align-self: flex-end;
+            background: #f1c40f;
+        }
 
-    /* Chatbot Footer */
-    #chatbot-footer {
-        padding: 15px;
-        border-top: 1px solid #ccc;
-        display: flex;
-        background-color: #f9f9f9;
-        border-radius: 0 0 15px 15px;
-    }
+        .message.bot {
+            align-self: flex-start;
+            background: #FFD700;
+        }
 
-    #user-input {
-        flex: 1;
-        padding: 10px;
-        border-radius: 25px;
-        border: 1px solid #ccc;
-        outline: none;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        #chat-input {
+            display: flex;
+            padding: 12px;
+            background: #f7f7f7;
+            border-top: 1px solid #e0e0e0;
+        }
 
-    #chatbot-footer button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 25px;
-        margin-left: 10px;
-        cursor: pointer;
-        font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        #chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #FFD700;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
 
-    #chatbot-footer button:hover {
-        background-color: #0056b3;
-    }
+        #chat-input input:focus {
+            border-color: #3a4e6c;
+            box-shadow: 0 0 5px rgba(58, 78, 108, 0.3);
+        }
+
+        #chat-input button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background: #3a4e6c;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        #chat-input button:hover {
+            background: #2d3a4b;
+            transform: scale(1.05);
+        }
 </style>
 
 
 <script>
-const API_URL = 'https://329a-34-16-135-116.ngrok-free.app/predict';
+// Function to handle the pop-out effect once
+window.onload = function() {
+    const chatToggle = document.getElementById('chat-toggle');
+    chatToggle.classList.add('pop');
+};
 
+        // Toggle chat window visibility
 function toggleChat() {
-    var dialog = document.getElementById('chatbot-dialog');
-    dialog.style.display = dialog.style.display === 'none' || dialog.style.display === '' ? 'flex' : 'none';
+    const chatWindow = document.getElementById('chat-window');
+    chatWindow.classList.toggle('visible');
 }
-
 function cleanAndFormatResponse(text) {
     // Split the text into sentences
     let sentences = text.split('.').map(sentence => sentence.trim()).filter(sentence => sentence.length > 0);
@@ -3350,9 +3378,11 @@ function cleanAndFormatResponse(text) {
     return cleanedSentences.join('. ') + '.';
 }
 
+
 function sendMessage() {
+    API_URL = "https://4def-34-105-9-131.ngrok-free.app/predict"
     var userInput = document.getElementById('user-input');
-    var messages = document.getElementById('messages');
+    var messages = document.getElementById('chat-messages');
 
     if (userInput.value.trim() !== '') {
         // Append user's message
@@ -3379,7 +3409,7 @@ function sendMessage() {
 
                 // Append bot's cleaned and formatted response
                 var botMessage = document.createElement('div');
-                botMessage.innerHTML = botMessageText.split('\n').join('<br/>');
+                botMessage.innerHTML = botMessageText.split('\n').join('<br/>'); // Split new lines for better formatting
                 botMessage.className = 'bot-message';
                 messages.appendChild(botMessage);
             } else {
@@ -3405,7 +3435,7 @@ function sendMessage() {
             messages.scrollTop = messages.scrollHeight;
         });
 
-        // Clear the input
+        // Clear the input field
         userInput.value = '';
     }
 }
